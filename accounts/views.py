@@ -2,6 +2,14 @@ from django.conf import settings
 from django.contrib.auth import login
 from django.contrib.auth.models import Group
 from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
+
+
+@login_required
+def post_login(request):
+    if request.user.groups.filter(name="Organization").exists():
+        return redirect("org_dashboard")
+    return redirect("event_list")
 
 from .forms import CustomerSignUpForm
 

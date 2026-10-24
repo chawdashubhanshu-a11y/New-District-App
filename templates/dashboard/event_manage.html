@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}{{ event.title }}{% endblock %}
+{% block content %}
+  <h1>{{ event.title }}</h1>
+  <p>{{ event.get_kind_display }} · ₹{{ event.price }}</p>
+  <p>{{ event.description }}</p>
+  {% if event.venue %}<p>Venue: {{ event.venue }}</p>{% endif %}
+
+  {% if event.kind == "TICKET" %}
+    <p>Starts: {{ event.starts_at }}</p>
+    <p>Tickets: {{ event.tickets_sold }} sold of {{ event.total_tickets }}</p>
+  {% else %}
+    <h2>Slots</h2>
+    <table border="1" cellpadding="6">
+      <tr><th>Start</th><th>End</th><th>Booked</th></tr>
+      {% for s in slots %}
+        <tr>
+          <td>{{ s.starts_at }}</td>
+          <td>{{ s.ends_at }}</td>
+          <td>{{ s.booked_count }} / {{ s.capacity }}</td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="3">No slots yet.</td></tr>
+      {% endfor %}
+    </table>
+
+    <h3>Add a slot</h3>
+    <form method="post">
+      {% csrf_token %}
+      {{ slot_form.as_p }}
+      <button type="submit">Add slot</button>
+    </form>
+  {% endif %}
+
+  <p><a href="{% url 'org_dashboard' %}">Back to dashboard</a></p>
+{% endblock %}

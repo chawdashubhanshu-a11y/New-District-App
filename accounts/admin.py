@@ -3,5 +3,15 @@ from django.contrib.auth.admin import UserAdmin
 
 from .models import OrganizationProfile, User
 
-admin.site.register(User, UserAdmin)
+
+class OrganizationProfileInline(admin.StackedInline):
+    model = OrganizationProfile
+    extra = 0
+
+
+class CustomUserAdmin(UserAdmin):
+    inlines = [OrganizationProfileInline]
+
+
+admin.site.register(User, CustomUserAdmin)
 admin.site.register(OrganizationProfile)

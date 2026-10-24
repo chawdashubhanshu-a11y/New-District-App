@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}New event{% endblock %}
+{% block content %}
+  <h1>Create event</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Create</button>
+  </form>
+  <p><a href="{% url 'org_dashboard' %}">Back to dashboard</a></p>
+{% endblock %}
