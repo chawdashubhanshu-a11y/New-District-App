@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ event.title }}{% endblock %}
+{% block content %}
+  <h1>{{ event.title }}</h1>
+  <p>{{ event.organization.name }} · {{ event.get_kind_display }}</p>
+  <p>{{ event.description }}</p>
+  {% if event.venue %}<p>Venue: {{ event.venue }}</p>{% endif %}
+  <p>Price: ₹{{ event.price }}</p>
+
+  {% if event.kind == "TICKET" %}
+    <p>Starts: {{ event.starts_at }}</p>
+    {% if event.tickets_left %}
+      <p>{{ event.tickets_left }} tickets left</p>
+      <form method="post" action="{% url 'book' event.pk %}">
+        {% csrf_token %}
+        <button type="submit">Book ticket (₹{{ event.price }})</button>
+      </form>
+    {% else %}
+      <p>Sold out.</p>
+    {% endif %}
+  {% else %}
+    <h3>Available slots</h3>
+    {% for slot in slots %}
+      <form method="post" action="{% url 'book' event.pk %}">
+        {% csrf_token %}
+        <input type="hidden" name="slot_id" value="{{ slot.pk }}">
+        {{ slot.starts_at }} to {{ slot.ends_at }}
+        ({{ slot.booked_count }}/{{ slot.capacity }} booked)
+        <button type="submit">Book (₹{{ event.price }})</button>
+      </form>
+    {% empty %}
+      <p>No slots available.</p>
+    {% endfor %}
+  {% endif %}
+{% endblock %}

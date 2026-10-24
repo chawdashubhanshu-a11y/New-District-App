@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}My bookings{% endblock %}
+{% block content %}
+  <h1>My bookings</h1>
+
+  <h2>Active tickets</h2>
+  {% for b in active %}
+    <div>
+      <p><strong>{{ b.event.title }}</strong> · ₹{{ b.price_paid }}</p>
+      {% if b.slot %}<p>Slot: {{ b.slot.starts_at }} to {{ b.slot.ends_at }}</p>{% endif %}
+      <p>Ticket ID: {{ b.ticket_id }}</p>
+      <p>Booked: {{ b.created_at }}</p>
+    </div>
+    <hr>
+  {% empty %}
+    <p>No active tickets.</p>
+  {% endfor %}
+
+  <h2>Past bookings</h2>
+  {% for b in past %}
+    <div>
+      <p><strong>{{ b.event.title }}</strong> · ₹{{ b.price_paid }}</p>
+      <p>Ticket ID: {{ b.ticket_id }}</p>
+      <p>Used: {{ b.consumed_at }}</p>
+    </div>
+    <hr>
+  {% empty %}
+    <p>No past bookings.</p>
+  {% endfor %}
+{% endblock %}

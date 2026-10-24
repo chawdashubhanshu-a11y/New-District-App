@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Wallet{% endblock %}
+{% block content %}
+  <h1>Wallet</h1>
+  <p>Balance: ₹{{ wallet.balance }}</p>
+  <p><a href="{% url 'add_money' %}">Add money</a></p>
+
+  <h2>Transaction history</h2>
+  <table border="1" cellpadding="6">
+    <tr><th>Date</th><th>Type</th><th>Amount</th><th>Details</th></tr>
+    {% for t in transactions %}
+      <tr>
+        <td>{{ t.created_at }}</td>
+        <td>{{ t.get_type_display }}</td>
+        <td>{% if t.type == "PURCHASE" %}-{% else %}+{% endif %}₹{{ t.amount }}</td>
+        <td>{% if t.booking %}{{ t.booking.event.title }}{% endif %}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="4">No transactions yet.</td></tr>
+    {% endfor %}
+  </table>
+{% endblock %}
