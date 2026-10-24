@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Analytics{% endblock %}
+{% block content %}
+  <h1>{{ org.name }}: analytics</h1>
+  <p><a href="{% url 'org_dashboard' %}">Back to dashboard</a></p>
+
+  <h2>Overview</h2>
+  <ul>
+    <li>Tickets purchased: {{ summary.tickets }}</li>
+    <li>Total revenue: ₹{{ summary.revenue }}</li>
+    <li>Consumed: {{ summary.consumed }} ({{ summary.consumed_pct }}%)</li>
+    <li>Not yet consumed: {{ summary.pending }}</li>
+  </ul>
+
+  <h2>By event</h2>
+  <table border="1" cellpadding="6">
+    <tr>
+      <th>Event</th><th>Type</th><th>Tickets purchased</th>
+      <th>Revenue</th><th>Consumed</th><th>Capacity used</th>
+    </tr>
+    {% for e in per_event %}
+      <tr>
+        <td>{{ e.title }}</td>
+        <td>{{ e.get_kind_display }}</td>
+        <td>{{ e.tickets }}</td>
+        <td>₹{{ e.revenue|default_if_none:0 }}</td>
+        <td>{{ e.consumed }}</td>
+        <td>
+          {% if e.kind == "TICKET" and e.total_tickets %}
+            {{ e.tickets_sold }} / {{ e.total_tickets }}
+          {% else %}
+            -
+          {% endif %}
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="6">No events yet.</td></tr>
+    {% endfor %}
+  </table>
+{% endblock %}

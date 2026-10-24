@@ -2,7 +2,11 @@
 {% block title %}Dashboard{% endblock %}
 {% block content %}
   <h1>{{ org.name }}: dashboard</h1>
-  <p><a href="{% url 'org_event_create' %}">Create new event</a></p>
+  <p>
+    <a href="{% url 'org_event_create' %}">Create new event</a> ·
+    <a href="{% url 'org_bookings' %}">Tickets and check-in</a> ·
+    <a href="{% url 'org_analytics' %}">Analytics</a>
+  </p>
 
   <h2>Your events</h2>
   <table border="1" cellpadding="6">

@@ -2,6 +2,7 @@
 {% block title %}{{ event.title }}{% endblock %}
 {% block content %}
   <h1>{{ event.title }}</h1>
+  <p><a href="{% url 'org_bookings' %}?event={{ event.pk }}">View tickets for this event</a></p>
   <p>{{ event.get_kind_display }} · ₹{{ event.price }}</p>
   <p>{{ event.description }}</p>
   {% if event.venue %}<p>Venue: {{ event.venue }}</p>{% endif %}
